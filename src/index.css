@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-  color-scheme: light only;
+  color-scheme: light dark;
   --bg-main: #f5faf6;
   --bg-card: #FFFFFF;
   --text-plum: #261C38;
@@ -115,6 +115,115 @@ textarea::placeholder {
 .mood-bar-scroll::-webkit-scrollbar-thumb {
   background: #DFD7EE;
   border-radius: 4px;
+}
+
+.recs-list-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.recs-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.recs-list-scroll::-webkit-scrollbar-thumb {
+  background: #DFD7EE;
+  border-radius: 999px;
+}
+
+/* ====== MODO OSCURO ARMONIOSO (CIRUELA NOCTURNO + LAVANDA) ====== */
+.dark-theme {
+  color-scheme: dark;
+  background-color: #140F1D !important;
+  color: #F4EFFA !important;
+}
+
+.dark-theme .dark-text-main {
+  color: #F4EFFA !important;
+}
+
+.dark-theme .dark-text-muted {
+  color: #B8AEC9 !important;
+}
+
+.dark-theme .dark-surface {
+  background-color: #1E172C !important;
+  border-color: #322647 !important;
+  box-shadow: 0 10px 26px -8px rgba(6, 3, 12, 0.55) !important;
+}
+
+.dark-theme .dark-form-header {
+  background: linear-gradient(135deg, #2D2142 0%, #241936 100%) !important;
+  border-bottom: 1px solid #3B2D54 !important;
+}
+
+.dark-theme input,
+.dark-theme select,
+.dark-theme textarea {
+  background-color: #161022 !important;
+  color: #F4EFFA !important;
+  -webkit-text-fill-color: #F4EFFA !important;
+  border-color: #35294B !important;
+}
+
+.dark-theme input:hover,
+.dark-theme select:hover,
+.dark-theme textarea:hover {
+  border-color: #554278 !important;
+}
+
+.dark-theme input:focus,
+.dark-theme select:focus,
+.dark-theme textarea:focus {
+  border-color: #C4B5FD !important;
+  box-shadow: 0 0 0 3px rgba(196, 181, 253, 0.18) !important;
+}
+
+.dark-theme input::placeholder,
+.dark-theme textarea::placeholder {
+  color: #877C9C !important;
+  -webkit-text-fill-color: #877C9C !important;
+}
+
+.dark-theme .dark-badge-lavender {
+  background-color: #2E2244 !important;
+  color: #E9D5FF !important;
+}
+
+.dark-theme .dark-avatar-badge {
+  background-color: #362238 !important;
+  color: #FBCFE8 !important;
+}
+
+.dark-theme .dark-divider {
+  background-color: #35294B !important;
+}
+
+.dark-theme .dark-empty-box {
+  background-color: #1E172C !important;
+  border-color: #463563 !important;
+}
+
+.dark-theme .btn-plum-primary {
+  background-color: #C4B5FD !important;
+  color: #181124 !important;
+}
+
+.dark-theme .btn-plum-primary:hover {
+  background-color: #DDD6FE !important;
+  box-shadow: 0 6px 18px rgba(196, 181, 253, 0.25) !important;
+}
+
+.dark-theme .btn-delete-pill {
+  background-color: #3A1B24 !important;
+  color: #FCA5A5 !important;
+}
+
+.dark-theme .btn-delete-pill:hover {
+  background-color: #522230 !important;
+  color: #FECACA !important;
+}
+
+.dark-theme .mood-bar-scroll::-webkit-scrollbar-thumb,
+.dark-theme .recs-list-scroll::-webkit-scrollbar-thumb {
+  background: #3B2D54;
 }
 
 @media (max-width: 840px) {

@@ -7,7 +7,7 @@ const MOOD_THEMES = {
     pillText: '#3B2D5E',
     stripe: '#C4B5FD',
     sparkle: '#DDD6FE',
-    icon: '☕'
+    icon: '🧠'
   },
   'Para maratonear': {
     pillBg: '#ffe8e8',
@@ -35,7 +35,7 @@ const MOOD_THEMES = {
     pillText: '#812e68',
     stripe: '#fca5d0',
     sparkle: '#fec7e7',
-    icon: '🌙'
+    icon: '☕'
   },
   'Para asustarse': {
     pillBg: '#e9ecef',
@@ -70,10 +70,17 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('recent');
   const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('recomnd-dark-mode') === 'true';
+  });
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('recomnd-dark-mode', darkMode);
+  }, [darkMode]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -155,7 +162,9 @@ export default function App() {
     ...inputBaseStyle,
     paddingRight: '2.4rem',
     appearance: 'none',
-    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23261C38' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+    backgroundImage: darkMode
+      ? `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F4EFFA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`
+      : `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23261C38' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right 0.85rem center',
     backgroundSize: '0.95rem'
@@ -166,25 +175,39 @@ export default function App() {
     fontSize: '0.82rem',
     fontWeight: '700',
     marginBottom: '0.35rem',
-    color: '#261C38'
+    color: darkMode ? '#F4EFFA' : '#261C38'
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#FAF8F5',
-      color: '#261C38',
-      padding: 'clamp(1.25rem, 3vw, 2.25rem) clamp(1rem, 3vw, 2rem) 4rem',
-      position: 'relative',
-      overflowX: 'hidden'
-    }}>
+    <div
+      className={darkMode ? 'dark-theme' : ''}
+      style={{
+        minHeight: '100vh',
+        backgroundColor: darkMode ? '#140F1D' : '#F7F2EA',
+        backgroundImage: darkMode
+          ? `
+            radial-gradient(circle at 10% 14%, rgba(124, 58, 237, 0.14) 0%, transparent 38%),
+            radial-gradient(circle at 90% 82%, rgba(167, 139, 250, 0.1) 0%, transparent 40%)
+          `
+          : `
+            radial-gradient(circle at 8% 12%, rgba(234, 228, 248, 0.7) 0%, transparent 34%),
+            radial-gradient(circle at 92% 22%, rgba(254, 243, 199, 0.55) 0%, transparent 32%),
+            radial-gradient(circle at 85% 88%, rgba(234, 228, 248, 0.6) 0%, transparent 38%)
+          `,
+        color: darkMode ? '#F4EFFA' : '#261C38',
+        padding: 'clamp(1.25rem, 3vw, 2.25rem) clamp(1rem, 3vw, 2rem) 4rem',
+        position: 'relative',
+        overflowX: 'hidden',
+        transition: 'background-color 0.25s ease, color 0.25s ease'
+      }}
+    >
       {/* Trazo decorativo superior derecho */}
       <svg
-        width="180"
-        height="95"
-        viewBox="0 0 180 95"
+        width="220"
+        height="130"
+        viewBox="0 0 220 130"
         fill="none"
-        style={{ position: 'absolute', top: 0, right: 0, pointerEvents: 'none', opacity: 0.75 }}
+        style={{ position: 'absolute', top: 0, right: 0, pointerEvents: 'none', opacity: darkMode ? 0.45 : 0.75 }}
       >
         <path
           d="M15 -10 C 5 45, 70 75, 135 45 C 165 30, 175 10, 195 15"
@@ -192,46 +215,128 @@ export default function App() {
           strokeWidth="1.75"
           fill="none"
         />
+        <path
+          d="M68 -14 C 58 28, 104 52, 162 24 C 186 12, 202 2, 225 6"
+          stroke="#C4B5FD"
+          strokeWidth="1.25"
+          fill="none"
+        />
       </svg>
 
-      <div style={{ maxWidth: '1120px', margin: '0 auto', width: '100%' }}>
+      {/* Trazos decorativos en los bordes */}
+      <svg
+        width="190"
+        height="150"
+        viewBox="0 0 190 150"
+        fill="none"
+        style={{ position: 'absolute', top: '16rem', left: '-1.5rem', pointerEvents: 'none', opacity: darkMode ? 0.32 : 0.55 }}
+      >
+        <path
+          d="M-10 20 C 35 12, 58 52, 34 92 C 18 118, 48 135, 82 125"
+          stroke="#B794F4"
+          strokeWidth="1.4"
+          fill="none"
+        />
+        <path
+          d="M-5 55 C 24 48, 38 74, 22 98"
+          stroke="#D6BCFA"
+          strokeWidth="1.15"
+          fill="none"
+        />
+      </svg>
+
+      <svg
+        width="210"
+        height="160"
+        viewBox="0 0 210 160"
+        fill="none"
+        style={{ position: 'absolute', bottom: '1rem', right: '-1rem', pointerEvents: 'none', opacity: darkMode ? 0.35 : 0.6 }}
+      >
+        <path
+          d="M35 165 C 55 110, 115 95, 165 125 C 188 138, 205 118, 220 95"
+          stroke="#9F7AEA"
+          strokeWidth="1.5"
+          fill="none"
+        />
+        <path
+          d="M78 168 C 94 128, 138 118, 175 140"
+          stroke="#C4B5FD"
+          strokeWidth="1.15"
+          fill="none"
+        />
+      </svg>
+
+      <div style={{ maxWidth: '1120px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
         
-        {/* Header Editorial */}
-        <header style={{ marginBottom: '1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.25rem' }}>
-            <h1
-              className="serif-title"
+        {/* Header Editorial + Botón Modo Oscuro/Claro */}
+        <header
+          style={{
+            marginBottom: '1.5rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: '1rem',
+            flexWrap: 'wrap'
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.25rem' }}>
+              <h1
+                className="serif-title dark-text-main"
+                style={{
+                  fontSize: 'clamp(2.4rem, 5vw, 3.25rem)',
+                  fontWeight: '800',
+                  margin: 0,
+                  letterSpacing: '-0.03em',
+                  color: '#261C38',
+                  lineHeight: 1.05
+                }}
+              >
+                Recomnd
+              </h1>
+              <img
+                src="/logo-recomnd.png"
+                alt="Logo Recomnd"
+                style={{
+                  height: 'clamp(2.2rem, 4.5vw, 2.5rem)',
+                  width: 'auto',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
+            <p
+              className="serif-title dark-text-muted"
               style={{
-                fontSize: 'clamp(2.4rem, 5vw, 3.25rem)',
-                fontWeight: '800',
+                color: '#4A3F5C',
                 margin: 0,
-                letterSpacing: '-0.03em',
-                color: '#261C38',
-                lineHeight: 1.05
+                fontSize: 'clamp(0.95rem, 1.6vw, 1.08rem)'
               }}
             >
-              Recomnd
-            </h1>
-            <img
-              src="/logo-recomnd.png"
-              alt="Logo Recomnd"
-              style={{
-                height: 'clamp(2.2rem, 4.5vw, 2.5rem)',
-                width: 'auto',
-                objectFit: 'contain'
-              }}
-            />
+              Tu bitácora cultural de películas, series y libros organizada por mood.
+            </p>
           </div>
-          <p
-            className="serif-title"
+
+          <button
+            type="button"
+            onClick={() => setDarkMode(!darkMode)}
+            className="mood-pill-btn dark-surface"
             style={{
-              color: '#4A3F5C',
-              margin: 0,
-              fontSize: 'clamp(0.95rem, 1.6vw, 1.08rem)'
+              padding: '0.5rem 0.95rem',
+              borderRadius: '2rem',
+              border: '1px solid #E5DFD9',
+              backgroundColor: '#FFFFFF',
+              color: darkMode ? '#F4EFFA' : '#261C38',
+              fontSize: '0.82rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem'
             }}
           >
-            Tu bitácora cultural de películas, series y libros organizada por mood.
-          </p>
+            <span>{darkMode ? '☀️' : '🌙'}</span>
+            <span>{darkMode ? 'Modo claro' : 'Modo oscuro'}</span>
+          </button>
         </header>
 
         {/* Barra de Búsqueda Ancha */}
@@ -242,9 +347,10 @@ export default function App() {
               left: '1.15rem',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: '#4A3F5C',
+              color: darkMode ? '#C4B5FD' : '#4A3F5C',
               fontSize: '1rem',
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              zIndex: 2
             }}
           >
             🔍
@@ -285,7 +391,8 @@ export default function App() {
                 fontWeight: 'bold',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                zIndex: 2
               }}
             >
               ✕
@@ -307,7 +414,8 @@ export default function App() {
                 justifyContent: 'center',
                 fontSize: '0.95rem',
                 fontWeight: 'bold',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                zIndex: 2
               }}
             >
               →
@@ -315,27 +423,37 @@ export default function App() {
           )}
         </div>
 
-        {/* Barra Horizontal de Filtros ("¿Cómo te sentís?") */}
+        {/* Barra Horizontal de Filtros ("¿Cómo te sentís?" fijo a la izquierda + scroll solo en las píldoras) */}
         <div
-          className="mood-bar-scroll"
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '0.75rem',
             marginBottom: '2rem',
-            overflowX: 'auto',
-            paddingBottom: '0.25rem',
-            WebkitOverflowScrolling: 'touch'
+            width: '100%'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexShrink: 0 }}>
-            <span style={{ fontWeight: '700', fontSize: '0.9rem', color: '#261C38' }}>
+            <span className="dark-text-main" style={{ fontWeight: '700', fontSize: '0.9rem', color: '#261C38', whiteSpace: 'nowrap' }}>
               ¿Cómo te sentís?
             </span>
-            <span style={{ width: '1px', height: '1.35rem', backgroundColor: '#E2DBD5' }} />
+            <span className="dark-divider" style={{ width: '1px', height: '1.35rem', backgroundColor: '#E2DBD5' }} />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <div
+            className="mood-bar-scroll"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              overflowX: 'auto',
+              paddingBottom: '0.35rem',
+              paddingTop: '0.15rem',
+              WebkitOverflowScrolling: 'touch',
+              flex: 1,
+              minWidth: 0
+            }}
+          >
             {Object.entries(MOOD_THEMES).map(([moodName, theme]) => {
               const isSelected = filterMood === moodName;
               return (
@@ -347,7 +465,9 @@ export default function App() {
                   style={{
                     padding: '0.48rem 1rem',
                     borderRadius: '2rem',
-                    border: isSelected ? '1.5px solid #261C38' : '1px solid transparent',
+                    border: isSelected
+                      ? `1.5px solid ${darkMode ? '#F4EFFA' : '#261C38'}`
+                      : '1px solid transparent',
                     backgroundColor: theme.pillBg,
                     color: theme.pillText,
                     fontSize: '0.84rem',
@@ -380,7 +500,7 @@ export default function App() {
           
           {/* Tarjeta de Formulario */}
           <div
-            className="sticky-sidebar-form"
+            className="sticky-sidebar-form dark-surface"
             style={{
               position: 'sticky',
               top: '1.25rem',
@@ -393,25 +513,15 @@ export default function App() {
           >
             {/* Cabecera Lavanda del Formulario */}
             <div
+              className="dark-form-header"
               style={{
                 background: 'linear-gradient(135deg, #EAE4F8 0%, #DFD6F6 100%)',
                 padding: '1.25rem 1.4rem',
                 position: 'relative'
               }}
             >
-              <span
-                style={{
-                  position: 'absolute',
-                  right: '1.15rem',
-                  top: '1rem',
-                  color: '#C4B5FD',
-                  fontSize: '1.75rem',
-                  pointerEvents: 'none'
-                }}
-              >
-              </span>
               <h3
-                className="serif-title"
+                className="serif-title dark-text-main"
                 style={{
                   fontSize: '1.3rem',
                   fontWeight: '800',
@@ -422,7 +532,7 @@ export default function App() {
                 Nueva recomendación
               </h3>
               <p
-                className="serif-title"
+                className="serif-title dark-text-muted"
                 style={{
                   margin: 0,
                   fontSize: '0.82rem',
@@ -478,18 +588,6 @@ export default function App() {
               <div style={{ marginBottom: '0.95rem' }}>
                 <label style={labelStyle}>¿Quién te lo recomendó? *</label>
                 <div style={{ position: 'relative' }}>
-                  <span
-                    style={{
-                      position: 'absolute',
-                      left: '0.85rem',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      fontSize: '0.85rem',
-                      color: '#6E657E',
-                      pointerEvents: 'none'
-                    }}
-                  >
-                  </span>
                   <input
                     type="text"
                     value={recommender}
@@ -504,17 +602,6 @@ export default function App() {
               <div style={{ marginBottom: '1.35rem' }}>
                 <label style={labelStyle}>¿Por qué vale la pena?</label>
                 <div style={{ position: 'relative' }}>
-                  <span
-                    style={{
-                      position: 'absolute',
-                      left: '0.85rem',
-                      top: '0.75rem',
-                      fontSize: '0.85rem',
-                      color: '#6E657E',
-                      pointerEvents: 'none'
-                    }}
-                  >
-                  </span>
                   <textarea
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
@@ -544,13 +631,13 @@ export default function App() {
                   gap: '0.45rem'
                 }}
               >
-                <span style={{ color: '#C4B5FD' }}>+</span>
+                <span>+</span>
                 <span>Guardar recomendación</span>
               </button>
             </form>
           </div>
 
-          {/* Columna Derecha: Encabezado + Lista de Tarjetas */}
+          {/* Columna Derecha: Encabezado + Lista de Tarjetas con límite de altura y scroll */}
           <div style={{ minWidth: 0 }}>
             
             {/* Encabezado de Sección */}
@@ -566,7 +653,7 @@ export default function App() {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                 <h2
-                  className="serif-title"
+                  className="serif-title dark-text-main"
                   style={{
                     fontSize: 'clamp(1.35rem, 2.5vw, 1.65rem)',
                     fontWeight: '800',
@@ -577,6 +664,7 @@ export default function App() {
                   Mis Recomendaciones
                 </h2>
                 <span
+                  className="dark-badge-lavender"
                   style={{
                     backgroundColor: '#EAE4F8',
                     color: '#261C38',
@@ -597,7 +685,7 @@ export default function App() {
                     style={{
                       background: 'none',
                       border: 'none',
-                      color: '#6B46C1',
+                      color: darkMode ? '#C4B5FD' : '#6B46C1',
                       fontSize: '0.82rem',
                       fontWeight: '700',
                       cursor: 'pointer',
@@ -620,7 +708,9 @@ export default function App() {
                     fontWeight: '600',
                     cursor: 'pointer',
                     appearance: 'none',
-                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23261C38' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                    backgroundImage: darkMode
+                      ? `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F4EFFA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`
+                      : `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23261C38' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'right 0.65rem center',
                     backgroundSize: '0.85rem'
@@ -635,6 +725,7 @@ export default function App() {
             {/* Estados de carga / vacío */}
             {loading && (
               <div
+                className="dark-surface dark-text-muted"
                 style={{
                   backgroundColor: '#FFFFFF',
                   padding: '2rem',
@@ -650,6 +741,7 @@ export default function App() {
 
             {!loading && filteredList.length === 0 && (
               <div
+                className="dark-empty-box"
                 style={{
                   backgroundColor: '#FFFFFF',
                   padding: '2.75rem 1.5rem',
@@ -659,17 +751,29 @@ export default function App() {
                 }}
               >
                 <div style={{ fontSize: '1.8rem', marginBottom: '0.4rem' }}>🍿</div>
-                <p style={{ margin: '0 0 0.25rem 0', fontWeight: '700', color: '#261C38' }}>
+                <p className="dark-text-main" style={{ margin: '0 0 0.25rem 0', fontWeight: '700', color: '#261C38' }}>
                   No hay recomendaciones con este filtro
                 </p>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: '#6E657E' }}>
+                <p className="dark-text-muted" style={{ margin: 0, fontSize: '0.85rem', color: '#6E657E' }}>
                   Probá desactivando el mood seleccionado o agregá una nueva recomendación.
                 </p>
               </div>
             )}
 
-            {/* Tarjetas de Recomendaciones */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
+          {/* Tarjetas de Recomendaciones (con límite de altura y scroll vertical) */}
+            <div
+              className="recs-list-scroll"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr',
+                gap: '1rem',
+                maxHeight: '610px',
+                overflowY: 'auto',
+                paddingRight: '0.35rem',
+                paddingTop: '0.2rem',
+                paddingBottom: '0.35rem'
+              }}
+            >
               {filteredList.map((item) => {
                 const theme = MOOD_THEMES[item.mood] || MOOD_THEMES['Para reflexionar'];
                 const catIcon = CATEGORY_ICONS[item.category] || '🎬';
@@ -678,7 +782,7 @@ export default function App() {
                 return (
                   <div
                     key={item.id}
-                    className="rec-card"
+                    className="rec-card dark-surface"
                     style={{
                       backgroundColor: '#FFFFFF',
                       padding: 'clamp(1rem, 2.5vw, 1.35rem) clamp(1rem, 2.5vw, 1.5rem)',
@@ -694,24 +798,11 @@ export default function App() {
                       overflow: 'hidden'
                     }}
                   >
-                    {/* Destello decorativo esquina inferior derecha */}
-                    <span
-                      style={{
-                        position: 'absolute',
-                        right: '1.1rem',
-                        bottom: '0.7rem',
-                        color: theme.sparkle,
-                        fontSize: '1.9rem',
-                        pointerEvents: 'none',
-                        lineHeight: 1
-                      }}
-                    >
-                    </span>
-
                     <div style={{ flex: 1, minWidth: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                       {/* Etiquetas superiores */}
                       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.6rem', flexWrap: 'wrap', alignItems: 'center' }}>
                         <span
+                          className="dark-badge-lavender"
                           style={{
                             fontSize: '0.74rem',
                             backgroundColor: '#EAE4F8',
@@ -748,7 +839,7 @@ export default function App() {
 
                       {/* Título */}
                       <h4
-                        className="serif-title"
+                        className="serif-title dark-text-main"
                         style={{
                           margin: '0 0 0.5rem 0',
                           fontSize: 'clamp(1.15rem, 2.5vw, 1.3rem)',
@@ -763,6 +854,7 @@ export default function App() {
                       {/* Recomendador */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: item.reason ? '0.65rem' : 0 }}>
                         <span
+                          className="dark-avatar-badge"
                           style={{
                             width: '1.45rem',
                             height: '1.45rem',
@@ -779,14 +871,15 @@ export default function App() {
                         >
                           {initial}
                         </span>
-                        <span style={{ color: '#6E657E', fontSize: 'clamp(0.8rem, 1.8vw, 0.85rem)' }}>
-                          Recomendado por <strong style={{ color: '#261C38', fontWeight: '700' }}>{item.recommender}</strong>
+                        <span className="dark-text-muted" style={{ color: '#6E657E', fontSize: 'clamp(0.8rem, 1.8vw, 0.85rem)' }}>
+                          Recomendado por <strong className="dark-text-main" style={{ color: '#261C38', fontWeight: '700' }}>{item.recommender}</strong>
                         </span>
                       </div>
 
                       {/* Cita / Motivo (sin serif, heredando fuente) */}
                       {item.reason && (
                         <p
+                          className="dark-text-muted"
                           style={{
                             fontFamily: 'inherit',
                             margin: 0,
