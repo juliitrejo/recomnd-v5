@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  color-scheme: light only;
+  --bg-main: #f5faf6;
+  --bg-card: #FFFFFF;
+  --text-plum: #261C38;
+  --text-muted: #6E657E;
+  --border-soft: #EBE5DF;
+  --lavender-soft: #EAE4F8;
+  --lavender-accent: #B794F4;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-plum);
+  background-color: var(--bg-main);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text-plum);
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  text-align: left;
+}
+
+.serif-title {
+  font-family: 'Fraunces', Georgia, serif;
+}
+
+input,
+select,
+textarea {
+  background-color: #FFFFFF !important;
+  color: #261C38 !important;
+  -webkit-text-fill-color: #261C38 !important;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #D5CCE6 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #9F7AEA !important;
+  box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.16) !important;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9A91AA !important;
+  -webkit-text-fill-color: #9A91AA !important;
+}
+
+.btn-plum-primary {
+  transition: all 0.2s ease;
+}
+
+.btn-plum-primary:hover {
+  background-color: #362850 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(38, 28, 56, 0.22) !important;
+}
+
+.mood-pill-btn {
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+
+.mood-pill-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.97);
+}
+
+.rec-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rec-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -6px rgba(38, 28, 56, 0.08) !important;
+}
+
+.btn-delete-pill {
+  transition: all 0.15s ease;
+}
+
+.btn-delete-pill:hover {
+  background-color: #FECACA !important;
+  color: #7F1D1D !important;
+}
+
+.mood-bar-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+.mood-bar-scroll::-webkit-scrollbar-thumb {
+  background: #DFD7EE;
+  border-radius: 4px;
+}
+
+@media (max-width: 840px) {
+  .recomnd-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .sticky-sidebar-form {
+    position: static !important;
+  }
+}
