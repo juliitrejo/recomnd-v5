@@ -1,5 +1,5 @@
 import { db } from "../firebase/config";
-import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 
 const COLLECTION_NAME = "recommendations";
 
@@ -37,4 +37,9 @@ export const deleteRecommendation = async (id) => {
     console.error("Error al eliminar: ", error);
     throw error;
   }
+};
+
+export const updateRecommendationStatus = async (id, watched) => {
+  const recRef = doc(db, COLLECTION_NAME, id);
+  await updateDoc(recRef, { watched });
 };

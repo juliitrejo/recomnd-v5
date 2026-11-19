@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { saveRecommendation, getRecommendations, deleteRecommendation } from './services/recommendationsService';
+import {
+  saveRecommendation,
+  getRecommendations,
+  deleteRecommendation,
+  updateRecommendationStatus
+} from './services/recommendationsService';
 
 const MOOD_THEMES = {
   'Para reflexionar': {
@@ -7,7 +12,7 @@ const MOOD_THEMES = {
     pillText: '#3B2D5E',
     stripe: '#C4B5FD',
     sparkle: '#DDD6FE',
-    icon: '🧠'
+    icon: '☕'
   },
   'Para maratonear': {
     pillBg: '#ffe8e8',
@@ -35,7 +40,7 @@ const MOOD_THEMES = {
     pillText: '#812e68',
     stripe: '#fca5d0',
     sparkle: '#fec7e7',
-    icon: '☕'
+    icon: '🌙'
   },
   'Para asustarse': {
     pillBg: '#e9ecef',
@@ -102,7 +107,8 @@ export default function App() {
       category,
       mood,
       recommender,
-      reason
+      reason,
+      watched: false
     };
 
     setRecommendations([nuevaRecTemp, ...recommendations]);
@@ -111,7 +117,7 @@ export default function App() {
     setReason('');
 
     try {
-      await saveRecommendation({ title, category, mood, recommender, reason });
+      await saveRecommendation({ title, category, mood, recommender, reason, watched: false });
       fetchData();
     } catch (error) {
       console.error("Error al guardar en Firebase:", error);
@@ -128,6 +134,22 @@ export default function App() {
       } catch (error) {
         fetchData();
       }
+    }
+  };
+
+  const handleToggleWatched = async (item) => {
+    const nuevoEstado = !item.watched;
+    setRecommendations(
+      recommendations.map((rec) =>
+        rec.id === item.id ? { ...rec, watched: nuevoEstado } : rec
+      )
+    );
+    try {
+      await updateRecommendationStatus(item.id, nuevoEstado);
+    } catch (error) {
+      console.error("Error al actualizar en Firebase:", error);
+      alert("No se pudo actualizar el estado en la base de datos.");
+      fetchData();
     }
   };
 
@@ -760,14 +782,14 @@ export default function App() {
               </div>
             )}
 
-          {/* Tarjetas de Recomendaciones (con límite de altura y scroll vertical) */}
+            {/* Tarjetas de Recomendaciones (con límite de altura y scroll vertical) */}
             <div
               className="recs-list-scroll"
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr',
                 gap: '1rem',
-                maxHeight: '610px',
+                maxHeight: '720px',
                 overflowY: 'auto',
                 paddingRight: '0.35rem',
                 paddingTop: '0.2rem',
@@ -876,7 +898,7 @@ export default function App() {
                         </span>
                       </div>
 
-                      {/* Cita / Motivo (sin serif, heredando fuente) */}
+                      {/* Cita / Motivo */}
                       {item.reason && (
                         <p
                           className="dark-text-muted"
@@ -896,31 +918,58 @@ export default function App() {
                       )}
                     </div>
 
-                    {/* Botón Borrar */}
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="btn-delete-pill"
-                      title="Eliminar recomendación"
-                      style={{
-                        backgroundColor: '#FEE2E2',
-                        color: '#991B1B',
-                        border: 'none',
-                        padding: '0.4rem 0.75rem',
-                        borderRadius: '2rem',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        flexShrink: 0,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.3rem',
-                        position: 'relative',
-                        zIndex: 1
-                      }}
-                    >
-                      <span>🗑️</span>
-                      <span>Borrar</span>
-                    </button>
+                    {/* Botones de Acción: Estado + Borrar */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', flexShrink: 0, position: 'relative', zIndex: 1 }}>
+                      <button
+                        onClick={() => handleToggleWatched(item)}
+                        className="mood-pill-btn"
+                        title="Cambiar estado"
+                        style={{
+                          backgroundColor: item.watched
+                            ? (darkMode ? '#1B3B2B' : '#DCFCE7')
+                            : (darkMode ? '#2E2244' : '#F3F0FA'),
+                          color: item.watched
+                            ? (darkMode ? '#86EFAC' : '#166534')
+                            : (darkMode ? '#DDD6FE' : '#4C1D95'),
+                          border: 'none',
+                          padding: '0.4rem 0.75rem',
+                          borderRadius: '2rem',
+                          cursor: 'pointer',
+                          fontSize: '0.75rem',
+                          fontWeight: '700',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.3rem'
+                        }}
+                      >
+                        <span>{item.watched ? '✅' : '⏳'}</span>
+                        <span>{item.watched ? 'Vista' : 'Pendiente'}</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        className="btn-delete-pill"
+                        title="Eliminar recomendación"
+                        style={{
+                          backgroundColor: '#FEE2E2',
+                          color: '#991B1B',
+                          border: 'none',
+                          padding: '0.4rem 0.75rem',
+                          borderRadius: '2rem',
+                          cursor: 'pointer',
+                          fontSize: '0.75rem',
+                          fontWeight: '700',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.3rem'
+                        }}
+                      >
+                        <span>🗑️</span>
+                        <span>Borrar</span>
+                      </button>
+                    </div>
                   </div>
                 );
               })}
